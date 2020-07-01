@@ -15,7 +15,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 
 /**
- * Remember to open fxml in scene builder witha simple right click
  * @author Michael
  *
  */
@@ -38,7 +37,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		launch(args); //uncomment this to start thing
+		launch(args);
 
 		
 	}//*/
