@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="p" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.EncryptorController">
+   <children>
+      <Button fx:id="btnFileChooser" layoutX="17.0" layoutY="29.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="39.0" prefWidth="111.0" text="Choose File">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <TextArea fx:id="txtArea" layoutX="138.0" layoutY="340.0" prefHeight="79.0" prefWidth="448.0" />
+      <Button fx:id="btnDirChooser" layoutX="17.0" layoutY="104.0" mnemonicParsing="false" onAction="#chooseFolder" prefHeight="39.0" prefWidth="111.0" text="Choose Folder">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnENCRYPT" layoutX="217.0" layoutY="267.0" mnemonicParsing="false" onAction="#ENCRYPT" prefHeight="39.0" prefWidth="111.0" text="ENCRYPT">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnDECRYPT" layoutX="361.0" layoutY="267.0" mnemonicParsing="false" onAction="#DECRYPT" prefHeight="39.0" prefWidth="111.0" text="DECRYPT">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <TextField fx:id="keyField" layoutX="138.0" layoutY="155.0" prefHeight="39.0" prefWidth="448.0" />
+      <Label layoutX="20.0" layoutY="155.0" prefHeight="39.0" prefWidth="111.0" text="Encryption Key:" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="193.0" layoutY="224.0" prefHeight="20.0" prefWidth="338.0" text="Otherwise, a key will be generated for you." wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="keepOldBtn" layoutX="22.0" layoutY="234.0" mnemonicParsing="false" onAction="#setKEEPOLD" prefHeight="39.0" prefWidth="111.0" text="Keep old file after encryption" wrapText="true" />
+      <Label layoutX="59.0" layoutY="79.0" text="OR">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="146.0" layoutY="204.0" prefHeight="20.0" prefWidth="284.0" text="NOTE:  The key must be 16 characters long." wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="327.0" prefHeight="39.0" prefWidth="65.0" text="Results:" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="fileArea" layoutX="136.0" layoutY="31.0" prefHeight="112.0" prefWidth="448.0" wrapText="true" />
+      <RadioButton fx:id="encNamesBtn" layoutX="20.0" layoutY="273.0" mnemonicParsing="false" onAction="#setENC_NAMES" prefHeight="39.0" prefWidth="119.0" text="Scramble file names" wrapText="true" />
+   </children>
+</Pane>
