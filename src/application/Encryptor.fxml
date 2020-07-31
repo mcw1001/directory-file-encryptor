@@ -15,7 +15,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <TextArea fx:id="txtArea" layoutX="138.0" layoutY="340.0" prefHeight="79.0" prefWidth="448.0" />
+      <TextArea fx:id="txtArea" editable="false" layoutX="138.0" layoutY="340.0" prefHeight="79.0" prefWidth="448.0" wrapText="true" />
       <Button fx:id="btnDirChooser" layoutX="17.0" layoutY="104.0" mnemonicParsing="false" onAction="#chooseFolder" prefHeight="39.0" prefWidth="111.0" text="Choose Folder">
          <font>
             <Font size="14.0" />
@@ -58,7 +58,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextArea fx:id="fileArea" layoutX="136.0" layoutY="31.0" prefHeight="112.0" prefWidth="448.0" wrapText="true" />
+      <TextArea fx:id="fileArea" editable="false" layoutX="136.0" layoutY="31.0" prefHeight="112.0" prefWidth="448.0" wrapText="true" />
       <RadioButton fx:id="encNamesBtn" layoutX="20.0" layoutY="273.0" mnemonicParsing="false" onAction="#setENC_NAMES" prefHeight="39.0" prefWidth="119.0" text="Scramble file names" wrapText="true" />
    </children>
 </Pane>

@@ -57,7 +57,7 @@ public class EncryptorController implements Initializable{
 	private RadioButton keepOldBtn;
 	
 	
-	private Boolean ENC_NAMES=true;
+	private Boolean ENC_NAMES=false;//=true;
 	@FXML
 	private RadioButton encNamesBtn;
 	
@@ -75,7 +75,8 @@ public class EncryptorController implements Initializable{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		//keepOldBtn.fire(); // program starts with keepOld ON
-		encNamesBtn.fire();
+		
+		//encNamesBtn.fire();
 		//alternatively use setSelected instead of .fire()
 		
 	}
@@ -120,54 +121,85 @@ public class EncryptorController implements Initializable{
     		txtArea.appendText("\r\n"+"new key: "+key+"\r\n");
     		keyField.setText(key);
     	}
+		if(fileList==null && dir==null) {
+			txtArea.setText("ERROR - no file or directory to encrypt");
+			return;
+		}
+    	new Thread() {
+    		public void run() {
+    			DISABLE_ALL();
+				String key = keyField.getText();
+		    	if(key.length()!=16) {
+		    		/** Ideally, this spot would inform the user with a pop up, not an 'output box', DOLATER*/
+		    		txtArea.appendText("\r\n"+"'"+key+"' is not 16 chars, generating new one...");
+		    		key = CryptoGen.stringGen(16);
+		    		txtArea.appendText("\r\n"+"new key: "+key+"\r\n");
+		    		keyField.setText(key);
+		    	}
     	
-
-    	if(ENC_NAMES) {
-    		File nameFile;
-    		if(dir!=null) {
-    			nameFile = new File(dir.getAbsolutePath()+"\\"+"Xx99A&Btg");//this will be the namefile's name
-    		}else {
-    			nameFile = new File(fileList.get(0).getParent()+"\\"+"Xx99A&Btg");
+		    	if(ENC_NAMES) {
+		    		File nameFile;
+		    		if(dir!=null) {
+		    			nameFile = new File(dir.getAbsolutePath()+"\\"+"Xx99A&Btg");//this will be the namefile's name
+		    		}else {
+		    			nameFile = new File(fileList.get(0).getParent()+"\\"+"Xx99A&Btg");
+		    		}
+		    		//files = FileCruncher.nameScramble(files, dir,nameFile);
+		    		fileList = FileCruncher.nameScramble((ArrayList<File>) fileList,nameFile);
+		
+		    	}
+		    	//call encryption on directory
+				FileCruncher.searchEncrypt(key,(ArrayList<File>) fileList,KEEPOLD);
+//				try {
+//					sleep(3000);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+				txtArea.appendText("File(s) encrypted successfully.");
+				ENABLE_ALL();
     		}
-    		//files = FileCruncher.nameScramble(files, dir,nameFile);
-    		fileList = FileCruncher.nameScramble((ArrayList<File>) fileList,nameFile);
-
-    	}
-    	//call encryption on directory
-		//FileCruncher.searchEncrypt(key,files,KEEPOLD);
-		FileCruncher.searchEncrypt(key,(ArrayList<File>) fileList,KEEPOLD);
-
-		txtArea.appendText("File(s) encrypted successfully.");
+    	}.start();
+		
+		
 	}
 	
 	public void DECRYPT(ActionEvent e) {
-		String key = keyField.getText();
-    	if(key.length()!=16) {
-    		/** Ideally, this spot would inform the user with a pop up, not with a textarea, DOLATER*/
-    		txtArea.setText("'"+key+"' is not 16 chars, cannot decrypt!"+"\r\n");
-    		return;
-    	}
-    	if(KEEPOLD) {
-//    		fileList = new ArrayList<File> (Arrays.asList(dir.listFiles(new encFilter())));//filter to only decrypt .enc files
-    		fileListTemp = fileList;
-    		fileList = FileCruncher.getEncs((ArrayList<File>) fileList);
-    	}
-    	
-		FileCruncher.searchDecrypt(key,(ArrayList<File>) fileList,KEEPOLD);
-    	if(ENC_NAMES) {//comes after decryption so names.txt is accessible
-    		File nameFile;
-    		if(dir!=null) {
-    			nameFile = new File(dir.getAbsolutePath()+"\\"+"Xx99A&Btg");//this will be the namefile's name
-    		}else {
-    			nameFile = new File(fileList.get(0).getParent()+"\\"+"Xx99A&Btg");
+		if(fileList==null && dir==null) {
+			txtArea.setText("ERROR - no file or directory to decrypt");
+			return;
+		}
+    	new Thread() {
+    		public void run() {
+    			DISABLE_ALL();
+				String key = keyField.getText();
+		    	if(key.length()!=16) {
+		    		/** Ideally, this spot would inform the user with a pop up, not with a textarea, DOLATER*/
+		    		txtArea.setText("'"+key+"' is not 16 chars, cannot decrypt!"+"\r\n");
+		    		return;
+		    	}
+		    	if(KEEPOLD) {
+		    		fileListTemp = fileList;
+		    		fileList = FileCruncher.getEncs((ArrayList<File>) fileList);
+		    	}
+		    	
+				FileCruncher.searchDecrypt(key,(ArrayList<File>) fileList,KEEPOLD);
+		    	if(ENC_NAMES) {//comes after decryption so names.txt is accessible
+		    		File nameFile;
+		    		if(dir!=null) {
+		    			nameFile = new File(dir.getAbsolutePath()+"\\"+"Xx99A&Btg");//this will be the namefile's name
+		    		}else {
+		    			nameFile = new File(fileList.get(0).getParent()+"\\"+"Xx99A&Btg");
+		    		}
+		    		fileList = FileCruncher.nameUnscramble(nameFile);
+		    	}
+		    	if(KEEPOLD) {
+		    		fileList = fileListTemp;
+		    	}
+				txtArea.setText("File(s) decrypted successfully.");
+				ENABLE_ALL();
     		}
-    		fileList = FileCruncher.nameUnscramble(nameFile);
-    		//files = dir.listFiles();//call AGAIN because file names have changed 
-    	}
-    	if(KEEPOLD) {
-    		fileList = fileListTemp;
-    	}
-		txtArea.setText("File(s) decrypted successfully.");
+    	}.start();
 	}
 	public void setKEEPOLD(ActionEvent e) {
 		if(keepOldBtn.isSelected()) {
@@ -187,6 +219,19 @@ public class EncryptorController implements Initializable{
 		}
 	}
 	
+	public void DISABLE_ALL() {
+		btnFileChooser.setDisable(true);
+		btnDirChooser.setDisable(true);
+		btnENCRYPT.setDisable(true);
+		btnDECRYPT.setDisable(true);
+	}
+	
+	public void ENABLE_ALL() {
+		btnFileChooser.setDisable(false);
+		btnDirChooser.setDisable(false);
+		btnENCRYPT.setDisable(false);
+		btnDECRYPT.setDisable(false);
+	}
 	/**
 	 * @param stage - a Stage object made in main, passed to an instance of this controller to allow referencing
 	 */
